@@ -106,7 +106,9 @@ class DataLabeler:
             injected fake companions. The snr is calculated using pca method.
             See the documentation of the ''vip_hci.pca'' package)
         max_snr : int, optional
-            Value used in the FluxEstimator class. Fix the maximum snr of the
+            Value used in the Fl
+        fraction_rotshifts : float between 0 and 1, optional
+            Fraction of the new C- samples made by rotation and shiftsuxEstimator class. Fix the maximum snr of the
             injected fake companions. The snr is calculated using pca method.
             max_snr shouldn't be to high compared to min_snr.
             (recommanded : max_snr = min-snr + 2)
@@ -137,10 +139,13 @@ class DataLabeler:
         n_proc : None or int, optional
             Number of processes for parallel computing. If None the number of
             processes will be set to (cpu_count()/2). Defaults to ``nproc=1``.
-        random_seed, optional
-        identifier, optional
-        dir_path, optional
-        reload, optional
+        random_seed : int, optional
+            Seed used to generate random numbers with Numpy
+        identifier : int, optional
+            Id of the Labeler object
+        dir_path : path or None, optional
+            If not None, path were the Labeler will be saved
+        reload : bool, optional
             Used for the load method.
 
         """
@@ -431,7 +436,7 @@ class DataLabeler:
                 arr[i][j] = arr[i][j][ind]
 
     def _basic_augmentation(self, n_samp_annulus, fraction_averages,
-                            fraction_rotshifts, shift_amplitude):
+                            shift_amplitude):
         """ Data augmentation for creating more labeled data using simple
         strategies (mean combinations, rotations, shifting of existing samples
 
@@ -441,12 +446,6 @@ class DataLabeler:
         """
         starttime = time_ini()
         random_state = np.random.RandomState(self.random_seed)
-
-        news = fraction_averages + fraction_rotshifts
-        if not news == 1.0:
-            ms = 'Fractions of averaged samples, rotated/shifted samples and '
-            ms += 'samples from the `messed-up cube` must sum up to one'
-            raise ValueError(ms)
 
         half_initsamples = self.x_plus.shape[0]
         print('Number of input samples: {}'.format(self.n_init_samples))
@@ -600,7 +599,7 @@ class DataLabeler:
             # ------------------------------------------------------------------
             # Random rotations (and shifts)
             border_mode = 'reflect'
-            roshi_nsamples = int(nc_samples * fraction_rotshifts)
+            roshi_nsamples = nc_samples - ave_nsamples
             msg = "{} C- rotations/shifts (- every 1k):"
             print(msg.format(roshi_nsamples))
             if self.sample_type == 'pw2d':
@@ -652,7 +651,7 @@ class DataLabeler:
         timing(starttime)
 
     def augment(self, mode='basic', n_samp_annulus=10, fraction_averages=0.6,
-                fraction_rotshifts=0.2, shift_amplitude=0.5, overwrite=True):
+                shift_amplitude=0.5, overwrite=True):
         """
         Augmentation of the number of samples for a labeler
 
@@ -666,9 +665,9 @@ class DataLabeler:
             n_samp_annulus*n_distances new C+ samples, and the same number of
             new C- samples
         fraction_averages : float between 0 and 1, optional
-            Fraction of the new C- samples made by the averages method
-        fraction_rotshifts : float between 0 and 1, optional
-            Fraction of the new C- samples made by rotation and shifts
+            Fraction of the new C- and c+ samples made by the averages method.
+            The other samples will be made using rotation and shifts. 10% of new
+            c+ samples will be made using new injections
         shift_amplitude : float, optional
             Shift amplitude of the cube to make rotshifts C- samples. Between 0
             and 2 px is recommended
@@ -686,7 +685,7 @@ class DataLabeler:
                 if self.sample_type == 'pw3d' and n_samp_annulus > 10000:
                     raise ValueError("`N_samp_annulus` is too high")
             self._basic_augmentation(n_samp_annulus, fraction_averages,
-                                     fraction_rotshifts, shift_amplitude)
+                                     shift_amplitude)
         else:
             print("Data augmentation mode not recognized")
 
