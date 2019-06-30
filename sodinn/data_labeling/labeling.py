@@ -100,15 +100,14 @@ class DataLabeler:
             odd integer value.
             See the documentation of the
             ''vip_hci.var package.frame_filter_highpass'' function)
-        normalization, optional
+        normalization : {'slice' or 'sample'}, optional
+
         min_snr : int, optional
             Value used in the FluxEstimator class. Fix the minimum snr of the
             injected fake companions. The snr is calculated using pca method.
             See the documentation of the ''vip_hci.pca'' package)
         max_snr : int, optional
-            Value used in the Fl
-        fraction_rotshifts : float between 0 and 1, optional
-            Fraction of the new C- samples made by rotation and shiftsuxEstimator class. Fix the maximum snr of the
+            Value used in the FluxEstimator class. Fix the maximum snr of the
             injected fake companions. The snr is calculated using pca method.
             max_snr shouldn't be to high compared to min_snr.
             (recommanded : max_snr = min-snr + 2)
@@ -249,7 +248,7 @@ class DataLabeler:
             self.radius_int = int(radius_int)
 
         if self.sample_type in ('mlar', 'tmlar', 'tmlar4d'):
-            self.sampling_sep = int(round(fwhm))
+            self.sampling_sep = int(fwhm)
         elif self.sample_type in ('pw2d', 'pw3d'):
             self.sampling_sep = 1
         else:
