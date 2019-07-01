@@ -1011,6 +1011,8 @@ class DataLabeler:
         if not filename.endswith('.hdf5'):
             filename += '.hdf5'
 
+        self.save_filename_labdata = filename
+
         with tables.open_file(filename, mode='w') as fh5:
             # Writing to HDF5 file
             for key in self.__dict__.keys():
