@@ -242,7 +242,6 @@ class Model:
                 if elem[-1] == 0:
                     elem.pop()
             return tuple(tuple(i) for i in arr2li)
-        print(filename)
 
         # config = tf.ConfigProto()
         # # Don't pre-allocate memory; allocate as-needed
@@ -255,6 +254,8 @@ class Model:
         # Opening HDF5 file
         if not filename.endswith('.hdf5'):
             filename += '.hdf5'
+
+        print(filename)
         fh5 = tables.open_file(filename, mode='r')
         print(fh5.root.save_filename_labdata[0].decode())
         filen_labdata = fh5.root.save_filename_labdata[0].decode() + '.hdf5'
