@@ -242,6 +242,7 @@ class Model:
                 if elem[-1] == 0:
                     elem.pop()
             return tuple(tuple(i) for i in arr2li)
+        print(filename)
 
         # config = tf.ConfigProto()
         # # Don't pre-allocate memory; allocate as-needed
