@@ -252,6 +252,7 @@ class Model:
         set_session(get_session())
 
         # Opening HDF5 file
+        ploup = filename
         if not filename.endswith('.hdf5'):
             filename += '.hdf5'
 
@@ -261,7 +262,7 @@ class Model:
         with tf.device('/cpu:0'):
             #model = models.load_model(fh5.root.save_filename_model[0].decode() +
             #                          '.h5')
-            model = models.load_model(filename +
+            model = models.load_model(ploup +
                                       '.h5')
         obj = cls(labeled_data)
         obj.model = model
