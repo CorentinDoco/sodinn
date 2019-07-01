@@ -255,13 +255,10 @@ class Model:
         if not filename.endswith('.hdf5'):
             filename += '.hdf5'
 
-        print(filename)
         fh5 = tables.open_file(filename, mode='r')
-        print(fh5.root.save_filename_labdata[0].decode())
         filen_labdata = fh5.root.save_filename_labdata[0].decode() + '.hdf5'
         labeled_data = DataLabeler.load(filen_labdata)
         with tf.device('/cpu:0'):
-            print(fh5.root.save_filename_model[0].decode())
             model = models.load_model(fh5.root.save_filename_model[0].decode() +
                                       '.h5')
         obj = cls(labeled_data)
