@@ -90,7 +90,6 @@ class Predictor:
         self.n_aug_inj = deepcopy(labeled_data.n_aug_inj)
         self.n_aug_aver = deepcopy(labeled_data.n_aug_aver)
         self.n_aug_rotshi = deepcopy(labeled_data.n_aug_rotshi)
-        self.n_aug_mupcu = deepcopy(labeled_data.n_aug_mupcu)
         self.nsamp_sep = deepcopy(labeled_data.nsamp_sep)
         self.min_n_slices = deepcopy(labeled_data.min_n_slices)
         self.flo = deepcopy(labeled_data.flo)
