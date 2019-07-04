@@ -256,7 +256,7 @@ class Model:
             filename += '.hdf5'
 
         fh5 = tables.open_file(filename, mode='r')
-        filen_labdata = fh5.root.save_filename_labdata[0].decode() + '.hdf5'
+        filen_labdata = fh5.root.save_filename_labdata[0].decode()
         labeled_data = DataLabeler.load(filen_labdata)
         with tf.device('/cpu:0'):
             model = models.load_model(filename[0: -5] + '.h5')
