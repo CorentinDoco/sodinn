@@ -265,7 +265,7 @@ class Model:
         obj.model = model
         obj.layer_type = tuple(np.char.decode(fh5.root.layer_type))
         obj.nconvlayers = fh5.root.nconvlayers.read()
-        #obj.conv_nfilters = tuple(fh5.root.conv_nfilters)
+        obj.conv_nfilters = tuple(fh5.root.conv_nfilters)
         obj.kernel_sizes = array_to_tup_of_tup(fh5.root.kernel_sizes)
         obj.conv_strides = array_to_tup_of_tup(fh5.root.conv_strides)
         obj.dilation_rate = array_to_tup_of_tup(fh5.root.dilation_rate)
