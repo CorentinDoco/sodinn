@@ -232,7 +232,7 @@ class Model:
             fh5.flush()
 
     @classmethod
-    def load(cls, filename):
+    def load(cls, filename, plop):
         """
         # TODO: find out why model trains in a single GPU after re-loading
         """
@@ -257,9 +257,9 @@ class Model:
 
         fh5 = tables.open_file(filename, mode='r')
         filen_labdata = fh5.root.save_filename_labdata[0].decode() + '.hdf5'
-        labeled_data = DataLabeler.load(filen_labdata)
+        labeled_data = DataLabeler.load(plop)
         with tf.device('/cpu:0'):
-            model = models.load_model(filename[0 : -5] + '.h5')
+            model = models.load_model(filename[0: -5] + '.h5')
 
         obj = cls(labeled_data)
         obj.model = model
