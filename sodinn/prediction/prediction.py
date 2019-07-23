@@ -22,6 +22,25 @@ class Predictor:
     def __init__(self, labeled_data, model, radius_int=None, radius_out=None,
                  identifier=1, dir_path=None):
         """
+        Predictor generation for a given Model and DataLabeler
+
+        Parameters
+        ----------
+        labeled_data : DataLabeler
+            The DataLabeler used to train the Model.
+        model : Model
+            Trained Model.
+        radius_int : int or None, optional
+            The initial separation [in pixels] at which the samples will be
+            taken from. If set to None, it will take the value of the radius_int
+            of the DataLabeler
+        radius_out : int or None, optional
+            The maximum separation [in pixels] to which the samples will be
+            taken from.
+        identifier : int, optional
+            Id of the Predictor object
+        dir_path : path or None, optional
+            If not None, path were the Predictor will be saved
         """
         if not hasattr(labeled_data, 'x_minus'):
             raise ValueError('labeled_data must be a sodinn.DataLabeler object')
@@ -262,13 +281,28 @@ class Predictor:
 
     def inspect_patch(self, xy, cmap='bone', dpi=40):
         """
+        Display the patches made in the Predictor
+
+        Parameters
+        ----------
+        xy : tuple of 2 int
+            Coordinates of the patche that will be displayed
+        cmap : None, str or tuple of str, optional
+            Colormap to be used. When None, the value of the global variable
+            ``default_cmap`` will be used. Any string corresponding to a valid
+            ``matplotlib`` colormap can be used. Additionally, 'ds9cool',
+            'ds9heat' and 'binary' (for binary maps) are valid colormaps for
+            this function.
+        dpi : int, optional
+            [backend='matplotlib'] Dots per inch, determines how many pixels the
+            figure comprises (which affects the plot quality).
         """
         if self.probas is None:
             raise RuntimeError("You must run the predictor first")
 
-        x_input, y_input = xy
         if not isinstance(xy, tuple):
             raise TypeError("`xy` must be a tuple")
+        x_input, y_input = xy
 
         for i, coord in enumerate(self.coords):
             if coord[0] == y_input and coord[1] == x_input:

@@ -771,6 +771,27 @@ class DataLabeler:
     def estimate_fluxes(self, algo='pca', n_injections=100, n_proc=None,
                         dpi=100, plot=True):
         """
+        Evaluate the min and max fluxes for injecting companion for each
+        distances, with respect to the min and max snr, by injecting fake
+        companion and measuring their snr. The min and max fluxes are then given
+        using a linear regression
+
+        Parameters
+        ----------
+        algo : {'pca', 'median'}, str optional
+            Algorithm to be used as a baseline for obtaining SNRs. 'pca' for a
+            principal component analysis based post-processing. 'median' for a
+            median subtraction approach.
+        n_injections : int, optional
+            Number of injected companion per distances for the regression.
+        n_proc : None or int, optional
+            Number of processes for parallel computing. If None the number of
+            processes will be set to (cpu_count()/2). Defaults to ``nproc=1``.
+        dpi : int, optional
+            DPI of the figures.
+        plot : bool, optional
+            If set to True, the figure showing the plots of the companions and
+            the regression will be shown.
         """
         if n_proc is None:
             n_proc = copy.copy(self.n_proc)
@@ -824,6 +845,7 @@ class DataLabeler:
 
     def run(self):
         """
+        Run the labeler to create c+ and c- samples.
         """
         starttime = time_ini()
 
